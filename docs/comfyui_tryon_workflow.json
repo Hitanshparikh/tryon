@@ -1,0 +1,115 @@
+﻿{
+  "last_node_id": 9,
+  "last_link_id": 9,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [100, 100],
+      "size": [315, 314],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [1]}],
+      "properties": {"Node name for S&R": "LoadImage"},
+      "widgets_values": ["person_model.png", "image"]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [100, 450],
+      "size": [315, 314],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [2]}],
+      "properties": {"Node name for S&R": "LoadImage"},
+      "widgets_values": ["garment_target.png", "image"]
+    },
+    {
+      "id": 3,
+      "type": "FASHN_VTON_Preprocessor",
+      "pos": [480, 100],
+      "size": [300, 200],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {"name": "person_image", "type": "IMAGE", "link": 1},
+        {"name": "garment_image", "type": "IMAGE", "link": 2}
+      ],
+      "outputs": [
+        {"name": "agnostic_person", "type": "IMAGE", "links": [3]},
+        {"name": "garment_isolated", "type": "IMAGE", "links": [4]},
+        {"name": "protection_mask", "type": "MASK", "links": [5]}
+      ],
+      "widgets_values": ["tops", true, 0.85]
+    },
+    {
+      "id": 4,
+      "type": "FASHN_VTON_ModelLoader",
+      "pos": [480, 360],
+      "size": [300, 150],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [{"name": "FASHN_MODEL", "type": "MODEL", "links": [6]}],
+      "widgets_values": ["fashn-vton-1.5.safetensors", "bf16", "cuda"]
+    },
+    {
+      "id": 5,
+      "type": "FASHN_VTON_Sampler",
+      "pos": [840, 180],
+      "size": [320, 350],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 6},
+        {"name": "agnostic_image", "type": "IMAGE", "link": 3},
+        {"name": "garment_image", "type": "IMAGE", "link": 4},
+        {"name": "protection_mask", "type": "MASK", "link": 5}
+      ],
+      "outputs": [{"name": "SYNTHESIZED_IMAGE", "type": "IMAGE", "links": [7]}],
+      "widgets_values": [30, 7.5, "euler", 1001, "tops"]
+    },
+    {
+      "id": 6,
+      "type": "FASHN_Pixel_Compositor",
+      "pos": [1220, 180],
+      "size": [300, 200],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {"name": "original_image", "type": "IMAGE", "link": 1},
+        {"name": "generated_image", "type": "IMAGE", "link": 7},
+        {"name": "protection_mask", "type": "MASK", "link": 5}
+      ],
+      "outputs": [{"name": "FINAL_IMAGE", "type": "IMAGE", "links": [8]}],
+      "widgets_values": [6, 1.0, true]
+    },
+    {
+      "id": 7,
+      "type": "SaveImage",
+      "pos": [1580, 180],
+      "size": [315, 314],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 8}],
+      "widgets_values": ["fashn_vton_result"]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 3, 0, "IMAGE"],
+    [2, 2, 0, 3, 1, "IMAGE"],
+    [3, 3, 0, 5, 1, "IMAGE"],
+    [4, 3, 1, 5, 2, "IMAGE"],
+    [5, 3, 2, 5, 3, "MASK"],
+    [6, 4, 0, 5, 0, "MODEL"],
+    [7, 5, 0, 6, 1, "IMAGE"],
+    [8, 6, 0, 7, 0, "IMAGE"]
+  ],
+  "version": 0.4
+}

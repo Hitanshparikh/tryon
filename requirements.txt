@@ -1,0 +1,27 @@
+﻿# Core Deep Learning & Diffusion
+diffusers>=0.30.0
+transformers>=4.44.0
+accelerate>=0.34.0
+safetensors>=0.4.5
+huggingface-hub>=0.24.0
+
+# Computer Vision & Image Processing
+opencv-python>=4.10.0.84
+pillow>=10.4.0
+numpy>=1.26.0,<2.0.0
+scipy>=1.13.0
+rembg>=2.0.59
+onnxruntime>=1.18.0
+
+# Web Backend & API
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.8.0
+python-multipart>=0.0.9
+aiofiles>=24.1.0
+requests>=2.32.0
+
+# Testing & Utilities
+pytest>=8.3.0
+psutil>=6.0.0
+tqdm>=4.66.0
