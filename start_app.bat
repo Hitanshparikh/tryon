@@ -1,6 +1,6 @@
 @echo off
 title AI Virtual Try-On Studio (FASHN VTON v1.5)
-cd /d "%~dp0.."
+cd /d "%~dp0"
 echo =========================================================
 echo    Launching AI Virtual Try-On Studio (RTX 4060)
 echo =========================================================
